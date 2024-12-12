@@ -36,6 +36,8 @@ if [ -z "$files" ]; then
     exit 1
 fi
 
+start_time=$(date +%s%3N)  # Общее время начала работы скрипта в миллисекундах
+
 # Перебираем найденные файлы и проверяем их срок годности
 for file in $files; do
     # Извлекаем часть имени файла после '_'
@@ -97,9 +99,13 @@ for file in $files; do
     # Отправка данных в VictoriaMetrics
     if [[ -n "$metrics_data" ]]; then
         curl -X POST --data "$metrics_data" "$url"
+        # Логируем отправленные данные
+        echo "Отправленные данные для файла '$file': $metrics_data" >> "$log_file"
     fi
-
-    # Запись в лог
-    echo "$metrics_data" >> "$log_file"
-
 done
+
+end_time=$(date +%s%3N)  # Общее время окончания работы скрипта в миллисекундах
+total_duration=$((end_time - start_time))  # Общее время выполнения скрипта
+
+# Запись в лог с информацией о выполнении
+echo "Общее время выполнения скрипта: $total_duration мс" >> "$log_file"
