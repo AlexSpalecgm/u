@@ -102,7 +102,7 @@ for file in $files; do
         curl -X POST --data "$metrics_data" "$url"
         # Логируем отправленные данные
         metrics_count=$(echo "$metrics_data" | wc -l)  # Считаем количество строк метрик
-        echo "Отправленные данные для файла '$file': $metrics_data | Количество отправленных метрик: $metrics_count" >> "$log_file"
+        echo -e "Отправленные данные для файла '$file':\n$metrics_data\nКоличество отправленных метрик: $metrics_count" >> "$log_file"
     fi
 done
 
