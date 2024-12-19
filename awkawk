@@ -104,6 +104,8 @@ for file in $files; do
         metrics_count=$(echo "$metrics_data" | wc -l)  # Считаем количество строк метрик
         echo -e "Отправленные данные для файла '$file':\n$metrics_data\nКоличество отправленных метрик: $metrics_count" >> "$log_file"
     fi
+        # Удаляем файл после успешной обработки
+        rm "$file"
 done
 
 end_time=$(date +%s%3N)  # Общее время окончания работы скрипта в миллисекундах
